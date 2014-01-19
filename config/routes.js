@@ -33,18 +33,18 @@ module.exports = function(app, passport, auth) {
 
     //Article Routes
     var transaction = require('../app/controllers/transaction');
-    app.get('/transaction/in', transaction.allIn);
-    app.get('/transaction/out', transaction.allOut);
+    app.get('/transaction/in', auth.requiresLogin,transaction.allIn);
+    app.get('/transaction/out', auth.requiresLogin,transaction.allOut);
     app.post('/transaction/in', auth.requiresLogin, transaction.createIn);
     app.post('/transaction/out', auth.requiresLogin, transaction.createOut);
-    app.get('/transaction/in/:transactionId', transaction.show);
-    app.get('/transaction/out/:transactionId', transaction.show);
-    app.put('/transaction/in/:transactionId', auth.requiresLogin, auth.transaction.hasAuthorization, transaction.update);
-    app.put('/transaction/out/:transactionId', auth.requiresLogin, auth.transaction.hasAuthorization, transaction.update);
-    app.del('/transaction/in/:transactionId', auth.requiresLogin, auth.transaction.hasAuthorization, transaction.destroy);
-    app.del('/transaction/out/:transactionId', auth.requiresLogin, auth.transaction.hasAuthorization, transaction.destroy);
-    app.put('/transaction/in/:transactionId/approve', auth.requiresLogin, auth.transaction.hasAuthorization, transaction.approve);
-    app.put('/transaction/out/:transactionId/approve', auth.requiresLogin, auth.transaction.hasAuthorization, transaction.approve);
+    app.get('/transaction/in/:transactionId',auth.requiresLogin, transaction.show);
+    app.get('/transaction/out/:transactionId',auth.requiresLogin, transaction.show);
+    app.put('/transaction/in/:transactionId', auth.requiresLogin, transaction.update);
+    app.put('/transaction/out/:transactionId', auth.requiresLogin,transaction.update);
+    app.del('/transaction/in/:transactionId', auth.requiresLogin, transaction.destroy);
+    app.del('/transaction/out/:transactionId', auth.requiresLogin,transaction.destroy);
+    app.put('/transaction/in/:transactionId/approve', auth.requiresLogin,transaction.approve);
+    app.put('/transaction/out/:transactionId/approve', auth.requiresLogin,transaction.approve);
 
     //Finish with setting up the articleId param
     app.param('transactionId', transaction.transaction);

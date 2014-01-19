@@ -48,12 +48,12 @@ var mongoose = require('mongoose'),
  */
 exports.transaction = {
     hasAuthorization: function(req, res, next) {
-        var index  =_.findIndex(req.user.roles, function(chr) {
+        /*var index  =_.findIndex(req.user.roles, function(chr) {
             return chr === 'SUPER_ADMIN';
         })
         if ( index===-1) {
             return res.send(401, 'User is not authorized');
-        }
+        }*/
         next();
     }
 };
