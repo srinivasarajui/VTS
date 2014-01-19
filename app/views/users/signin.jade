@@ -1,0 +1,7 @@
+extends ../layouts/default
+block content
+  form.form-signin(action="/users/session", method="post", role="form")
+    h2.form-signin-heading Please sign in
+    input#email.form-control(type='text', name="email", placeholder='Email')
+    input#password.form-control(type='password', name="password", placeholder='Password')
+    button.btn.btn-primary.btn-block(type='submit') Sign in

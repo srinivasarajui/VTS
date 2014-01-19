@@ -1,0 +1,71 @@
+<div class="panel panel-default" data-ng-init="findOne()">
+	<div class="panel-heading clearfix">
+		<h4 class="panel-title pull-left">Stock {{direction}} - View</h4>
+	</div>
+	<div class="panel-body">
+<div class="row" >
+<div class="col-sm-6 form-horizontal" role="form">
+    
+
+ 		<div class="form-group">
+    		<label for="docId" class="col-sm-4 control-label">Document ID</label>
+    		<div class="col-sm-6"><p class="form-control-static">{{transaction.docId}}</p>
+    		</div>
+  		</div>
+  		<div class="form-group">
+    		<label for="date" class="col-sm-4 control-label"> Date</label>
+    		<div class="col-sm-4"><p class="form-control-static">{{ transaction.date | date:'dd-MMM-yyyy' || 'empty' }}</p>
+    		</div>
+  		</div>
+  		<div class="form-group">
+    		<label for="warehouse" class="col-sm-4 control-label">Warehouse</label>
+    		<div class="col-sm-6"><p class="form-control-static">{{transaction.warehouse.displayText}}</p>
+       	</div>
+  		</div>
+
+  	
+  		</div>
+  		<div class="col-sm-6">
+  		<div class="pull-right">
+    <a class="btn btn-info" href="#!/{{editLink}}">Cancel</a>
+    <a class="btn btn-primary"  ng-click="approve()" ng-show="transaction.canApprove">Approve</a>
+   </div>
+  		</div>
+  		</div>
+  		<br/>
+  		<table class="table table-bordered table-hover table-condensed clearfix">
+      <tr style="font-weight: bold">
+      <td style="width:20%">Color</td>
+      <td style="width:20%">Thickness</td>
+      <td style="width:20%">Width</td>
+      <td style="width:20%">Roll Length</td>
+      <td style="width:10%">No Of Rolls</td>
+      <td style="width:10%">Box Number</td>
+      </tr>
+    <tr ng-repeat="item in transaction.items">
+      <td>
+        <p class="form-control-static">{{ item.color.displayText || 'empty' }}</p>
+      </td>
+      <td>
+        <p class="form-control-static">{{ item.width.displayText || 'empty' }}</p>
+      </td>
+      <td>
+        <p class="form-control-static">{{ item.thickness.displayText || 'empty' }}</p>
+      </td>
+       <td>
+        <p class="form-control-static">{{ item.rollSize.displayText || 'empty' }}</p>
+      </td>
+      <td>
+        <p class="form-control-static">{{ item.quantity || 'empty' }}</p>
+      </td>
+      <td>
+        <p class="form-control-static">{{ item.boxNum || 'empty' }}</p>
+      </td>
+      
+      
+    </tr>
+  </table>
+    </form>
+
+	</div>
+</div>
