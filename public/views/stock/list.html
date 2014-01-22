@@ -14,7 +14,7 @@
         <div class="controls span2">
             <label>Thickness</label>
             <label class="checkbox" ng-repeat="item in thickness">
-              <input type="checkbox" value="item.code" id="inlineCheckbox1">{{item.displayText}}</label>
+              <input type="checkbox" name="selectedThickness[]" ng-checked="stockSelection.thickness.indexOf(item.code)>-1" ng-click="toggleSelection(stockSelection.thickness,item.code)">{{item.displayText}}</label>
          </div>
       </div>
     </div>
@@ -23,7 +23,7 @@
         <div class="controls span2">
             <label>Width</label>
             <label class="checkbox" ng-repeat="item in width">
-              <input type="checkbox" value="item.code" id="inlineCheckbox1">{{item.displayText}}</label>
+               <input type="checkbox" name="selectedWidth[]" ng-checked="stockSelection.width.indexOf(item.code)>-1" ng-click="toggleSelection(stockSelection.width,item.code)">{{item.displayText}}</label>
             
          </div>
       </div>
@@ -33,13 +33,15 @@
         <div class="controls span2">
             <label>Warehouse</label>
             <label class="checkbox" ng-repeat="item in warehouse">
-              <input type="checkbox" value="item.code" id="inlineCheckbox1">{{item.displayText}}</label>
+              <input type="checkbox" name="selectedWarehouse[]" ng-checked="stockSelection.warehouse.indexOf(item.code)>-1" ng-click="toggleSelection(stockSelection.warehouse,item.code)">{{item.displayText}}</label>
             
          </div>
       </div>
     </div>
   </div>
+
   <br />
+ 
 	<table class="table table-bordered table-hover table-condensed clearfix">
       <tr style="font-weight: bold">
       <td style="width:20%">Color</td>
@@ -50,7 +52,7 @@
       <td style="width:10%">Quantity</td>
       <td style="width:20%">Box Details</td>
     </tr>
-    <tr ng-repeat="stock in stocks | filter:stockFilter">
+    <tr ng-repeat="stock in stocks| filter:stockFilter">
       <td>{{ stock.color || 'empty' }}</td>
       <td>{{ stock.thickness || 'empty' }}</td>
       <td>{{ stock.width || 'empty' }}</td>
