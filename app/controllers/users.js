@@ -101,3 +101,18 @@ exports.user = function(req, res, next, id) {
             next();
         });
 };
+
+exports.changePassword = function(req, res) {
+
+    User.findOne({'username': req.user.username}).exec(function(err, user) {
+        if(user.authenticate(req.body.oldPassword)){
+            user.password = req.body.newPassword;
+            user.save();
+            res.result = 'DONE';
+            
+        }
+    });
+   
+ 
+};
+

@@ -8,11 +8,28 @@
 var paramsPath = __dirname.substring(0,__dirname.lastIndexOf('/'))+'/common/params.js';
 
 
+
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     params = require(paramsPath),
     _ = require('lodash');
 
+
+/**
+ * TransactionLine Schema
+ */
+var BoxDetailsSchema = new Schema({
+    BoxId: {
+        type: String,
+        default: '',
+        trim: true,
+        uppercase: true
+    },
+    quantity: {
+        type: Number,
+        min: 0
+    }
+});
 
 /**
  * Stock Schema
@@ -56,8 +73,8 @@ var TapeStockSchema = new Schema({
     quantity: {
         type: Number,
         min: 0
-    }
-    
+    },
+    boxes : [BoxDetailsSchema]
     
 });
 

@@ -19,6 +19,9 @@ angular.module('VTS').config(['$routeProvider',
         when('/index', {
             templateUrl: 'views/index.html'
         }).
+         when('/manageUser', {
+            templateUrl: 'views/user/manageUser.html'
+        }).
         when('/transactionIn', {
             templateUrl: 'views/transaction/list.html',
             controller: 'TransactionController'
@@ -56,7 +59,7 @@ angular.module('VTS').config(['$routeProvider',
             controller: 'StocksController'
         }).
         otherwise({
-            redirectTo: '/stock'
+            redirectTo: '/index'
         });
     }
 ]);

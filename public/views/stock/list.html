@@ -4,15 +4,51 @@
     
 	</div>
 	<div class="panel-body">
-
+  <div class="row" >
+    <div class="col-sm-3" >
+    <select ng-model="stockSelection.color" ng-options="c.displayText for c in color" class="form-control" id="color" placeholder="Enter Color" required > <option value="ALL">ALL</option> </select>
+    
+    </div>
+    <div class="col-sm-2" >
+      <div class="control-group">
+        <div class="controls span2">
+            <label>Thickness</label>
+            <label class="checkbox" ng-repeat="item in thickness">
+              <input type="checkbox" value="item.code" id="inlineCheckbox1">{{item.displayText}}</label>
+         </div>
+      </div>
+    </div>
+    <div class="col-sm-2" >
+      <div class="control-group">
+        <div class="controls span2">
+            <label>Width</label>
+            <label class="checkbox" ng-repeat="item in width">
+              <input type="checkbox" value="item.code" id="inlineCheckbox1">{{item.displayText}}</label>
+            
+         </div>
+      </div>
+    </div>
+    <div class="col-sm-2" >
+      <div class="control-group">
+        <div class="controls span2">
+            <label>Warehouse</label>
+            <label class="checkbox" ng-repeat="item in warehouse">
+              <input type="checkbox" value="item.code" id="inlineCheckbox1">{{item.displayText}}</label>
+            
+         </div>
+      </div>
+    </div>
+  </div>
+  <br />
 	<table class="table table-bordered table-hover table-condensed clearfix">
       <tr style="font-weight: bold">
       <td style="width:20%">Color</td>
-      <td style="width:15%">Thickness</td>
-      <td style="width:15%">Width</td>
+      <td style="width:10%">Thickness</td>
+      <td style="width:10%">Width</td>
       <td style="width:20%">Warehouse</td>
-      <td style="width:15%">Roll Size</td>
-      <td style="width:15%">Quantity</td>
+      <td style="width:10%">Roll Size</td>
+      <td style="width:10%">Quantity</td>
+      <td style="width:20%">Box Details</td>
     </tr>
     <tr ng-repeat="stock in stocks | filter:stockFilter">
       <td>{{ stock.color || 'empty' }}</td>
@@ -21,7 +57,7 @@
       <td>{{ stock.warehouse || 'empty' }}</td>
       <td>{{ stock.rollSize || 'empty' }}</td>
       <td>{{ stock.quantity || 'empty' }}</td>
-     
+     <td>{{ stock.boxDetails || 'empty' }}</td>
     </tr>
   </table>
   </div>

@@ -1,11 +1,13 @@
 'use strict';
 
-var app=angular.module('VTS', ['ngCookies', 'ngResource', 'ngRoute', 'ui.bootstrap', 'ui.route','xeditable', 'underscore','VTS.system', 'VTS.articles','VTS.transactions','VTS.stocks']);
+var app=angular.module('VTS', ['ngCookies', 'ngResource', 'ngRoute', 'ui.bootstrap', 'ui.route','xeditable', 'underscore','VTS.system','VTS.common', 'VTS.articles','VTS.transactions','VTS.stocks','VTS.users']);
 
 angular.module('VTS.system', []);
+angular.module('VTS.common', []);
 angular.module('VTS.articles', []);
-angular.module('VTS.transactions', []);
-angular.module('VTS.stocks', []);
+angular.module('VTS.transactions', ['VTS.common']);
+angular.module('VTS.stocks', ['VTS.common']);
+angular.module('VTS.users', []);
 app.run(function(editableOptions) {
 		editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 	});

@@ -7,7 +7,8 @@ module.exports = function(app, passport, auth) {
     app.get('/signup', users.signup);
     app.get('/signout', users.signout);
     app.get('/users/me', users.me);
-
+    app.post('/users/changePassword',auth.requiresLogin, users.changePassword);
+    
     //Setting up the users api
     app.post('/users', users.create);
 
@@ -50,7 +51,7 @@ module.exports = function(app, passport, auth) {
     app.param('transactionId', transaction.transaction);
 
     var stock = require('../app/controllers/stock');
-    app.get('/stock', stock.all);
+    app.get('/stock', auth.requiresLogin,stock.all);
 
     //Home route
     var index = require('../app/controllers/index');

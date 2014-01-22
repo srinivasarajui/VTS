@@ -15,8 +15,6 @@
         </li>
           </ul>
           <ul class="nav navbar-nav navbar-right" data-ng-hide="global.authenticated">
-             <li><a href="signup">Signup</a>
-        </li>
         <li class="divider-vertical"></li>
         <li><a href="signin">Signin</a>
         </li>
@@ -27,6 +25,8 @@
                 {{global.user.name}} <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
+                <li><a href="#!/manageUser">Manage User</a>
+                </li>
                 <li><a href="/signout">Signout</a>
                 </li>
             </ul>

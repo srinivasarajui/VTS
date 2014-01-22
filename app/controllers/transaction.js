@@ -149,13 +149,35 @@ exports.approve = function(req, res) {
             rollSize:line.rollSize,
             warehouse:transaction.warehouse
         };
-        var quantity = transaction.transType==='IN'?line.quantity:-1*line.quantity;
-        var update = { $inc: { quantity: quantity }};
-        var options = { multi: false };
-        
-        TapeStock.update(conditions, update, options, function(err) {
-            if (err) {console.error(err);}
+        TapeStock.findOne(conditions).exec(function(err, stock) {
+            var index = _.findIndex(stock.boxes, { 'BoxId': line.boxNum });
+            if(transaction.transType==='IN'){
+                stock.quantity = stock.quantity +line.quantity;
+                 
+                if(index===-1){
+                    stock.boxes.splice(stock.boxes,0,{BoxId:line.boxNum,quantity:line.quantity});
+                }else{
+                    stock.boxes[index].quantity = stock.boxes[index].quantity + line.quantity;
+                }
+                 
+            }
+            else if(transaction.transType==='OUT'){
+                stock.quantity = stock.quantity -line.quantity;
+                
+                if(index!==-1){
+
+                    stock.boxes[index].quantity = stock.boxes[index].quantity - line.quantity;
+                    if(stock.boxes[index].quantity<=0){
+                        stock.boxes.splice(index,1);
+                    }
+                }
+            }
+            stock.save();
         });
+        
+        
+        
+       
         transaction.save(function(err) {
             if (err) {
                 return res.send('users/signup', {
