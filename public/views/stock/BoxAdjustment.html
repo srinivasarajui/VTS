@@ -1,0 +1,73 @@
+<div class="panel panel-default" >
+	<div class="panel-heading clearfix">
+		<h4 class="panel-title pull-left" >Current Stock</h4>
+		<div class ="pull-right">
+		<button type="button" class="btn btn-primary"  ng-click="tranfer()">Transfer</button>
+		</div>
+	</div>
+	<div class="panel-body">
+	<div class="form-group">
+    		<label for="docId" class="col-sm-2 control-label">From box Id</label>
+    		<div class="col-sm-2">
+      			<input type="string" class="form-control" ng-model="stock.boxId" id="docId" placeholder="Box ID" size="10" >
+    		</div>
+        <div class="col-sm-2">
+    		  <button type="button" class="btn btn-primary"  ng-click="getBoxDetails()">Get</button>
+        </div>
+  		</div>
+  		<br />
+
+      <table class="table table-bordered table-hover table-condensed clearfix">
+ 		    <tr style="font-weight: bold">
+      <td style="width:15%">Color</td>
+      <td style="width:10%">Thickness</td>
+      <td style="width:10%">Width</td>
+      <td style="width:10%">Warehouse</td>
+      <td style="width:10%">Roll Size</td>
+      <td style="width:10%">Old Box ID</td>
+      <td style="width:10%">Quantity</td>
+      <td style="width:10%">New Box ID</td>
+      <td style="width:10%">Quantity</td>
+      <td style="width:5%">Actions</td>
+    </tr>
+    <tr ng-repeat="stock in stocks">
+      <td>{{ stock.color || 'empty' }}</td>
+      <td>{{ stock.thickness || 'empty' }}</td>
+      <td>{{ stock.width || 'empty' }}</td>
+      <td>{{ stock.warehouse || 'empty' }}</td>
+      <td>{{ stock.rollSize || 'empty' }}</td>
+      <td>{{ stock.BoxId || 'empty' }}</td>
+      <td>{{ stock.quantity || 'empty' }}</td>
+      <td><input type="String" data-ng-model="newitem.boxNum" class="form-control" id="boxNum" placeholder="Box Number"></td>
+      <td><input type="String" data-ng-model="newitem.qty" class="form-control" id="qty" placeholder="Quantity"></td>
+      <td><button class="btn btn-primary" ng-click="addToAdjustment(stock,newitem.boxNum,newitem.qty)"> <span class="glyphicon glyphicon-plus-sign"></span></button></td>
+    </tr>
+  </table>
+	 <br />
+   <table class="table table-bordered table-hover table-condensed clearfix">
+        <tr style="font-weight: bold">
+      <td style="width:15%">Color</td>
+      <td style="width:10%">Thickness</td>
+      <td style="width:10%">Width</td>
+      <td style="width:10%">Warehouse</td>
+      <td style="width:10%">Roll Size</td>
+      <td style="width:10%">Old Box ID</td>
+      <td style="width:10%">Quantity</td>
+      <td style="width:10%">New Box ID</td>
+      <td style="width:10%">Quantity</td>
+     
+    </tr>
+    <tr ng-repeat="stock in adjustments">
+      <td>{{ stock.color || 'empty' }}</td>
+      <td>{{ stock.thickness || 'empty' }}</td>
+      <td>{{ stock.width || 'empty' }}</td>
+      <td>{{ stock.warehouse || 'empty' }}</td>
+      <td>{{ stock.rollSize || 'empty' }}</td>
+      <td>{{ stock.BoxId || 'empty' }}</td>
+      <td>{{ stock.quantity || 'empty' }}</td>
+      <td>{{ stock.newBoxId || 'empty' }}</td>
+      <td>{{ stock.newQuantity || 'empty' }}</td>
+    </tr>
+  </table>
+	</div>
+</div>

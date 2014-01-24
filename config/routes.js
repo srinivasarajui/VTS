@@ -52,7 +52,8 @@ module.exports = function(app, passport, auth) {
 
     var stock = require('../app/controllers/stock');
     app.get('/stock', auth.requiresLogin,stock.all);
-
+    app.put('/stock/getBoxDetails', auth.requiresLogin,stock.findStockByBoxId);
+    app.put('/stock/transferBoxes', auth.requiresLogin,stock.transferBoxes);
     //Home route
     var index = require('../app/controllers/index');
     app.get('/', index.render);

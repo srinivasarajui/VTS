@@ -16,8 +16,6 @@ angular.module('VTS.stocks').controller('StocksController', ['$scope', '$routePa
         $scope.stockSelection.warehouse  = _.pluck(Warehouse, 'code');
 	}
     $scope.stockFilter = function(stock) {
-    	console.log($scope.stockSelection.color.code );
-    	console.log(stock.color );
         if($scope.stockSelection.color !== allColor && $scope.stockSelection.color.code !== stock.color){return false;}
         if($scope.stockSelection.thickness.indexOf(stock.thickness)===-1){return false;}
         if($scope.stockSelection.width.indexOf(stock.width)===-1){return false;}
@@ -38,9 +36,42 @@ angular.module('VTS.stocks').controller('StocksController', ['$scope', '$routePa
 		});
 	};
 	
-	$scope.toggleSelection = function toggleSelection(array,code) {
+	$scope.toggleSelection = function(array,code) {
         var idx = array.indexOf(code);
         if (idx > -1) {array.splice(idx, 1);}
         else {array.push(code);}
     };
+
+    $scope.getBoxDetails = function() {
+        if($scope.stock.boxId){
+            Stocks.getBoxDetails({BoxId:$scope.stock.boxId},function(stocks) {
+                    $scope.stocks=stocks;
+                });
+        }
+    };
+
+    $scope.addToAdjustment = function(stock,boxNum,qty){
+        if(!$scope.adjustments){
+            $scope.adjustments = [];
+        }
+        $scope.adjustments.push({
+            color:stock.color,
+            thickness:stock.thickness,
+            width:stock.width,
+            warehouse:stock.warehouse,
+            rollSize:stock.rollSize,
+            BoxId:stock.BoxId,
+            quantity:stock.quantity,
+            newBoxId:boxNum,
+            newQuantity:qty
+
+        });
+    };
+    $scope.tranfer= function(){
+        if($scope.adjustments){
+            Stocks.transferBoxes($scope.adjustments);
+        }
+
+    };
+
 }]);

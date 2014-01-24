@@ -12,6 +12,9 @@ angular.module('VTS.system').controller('HeaderController', ['$scope', 'Global',
     }, {
         'title': 'Stock',
         'link': 'stock'
+    }, {
+        'title': 'Adjustment',
+        'link': 'stock/BoxAdjustment'
     }];
     
     $scope.isCollapsed = false;
