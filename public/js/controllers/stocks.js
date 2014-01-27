@@ -3,6 +3,7 @@
 angular.module('VTS.stocks').controller('StocksController', ['$scope', '$routeParams', '$location', 'Global', 'Stocks','_','Color','Thickness','Width','Warehouse', function ($scope, $routeParams, $location, Global, Stocks,_,Color,Thickness,Width,Warehouse) {
     $scope.global = Global;
     var allColor={ internalCode :'ALL', code : 'ALL' , displayText : 'All'};
+
     function init() {
 		$scope.color = Color.slice(0);
 		$scope.color.splice($scope.color,0,allColor );
@@ -15,6 +16,7 @@ angular.module('VTS.stocks').controller('StocksController', ['$scope', '$routePa
         $scope.stockSelection.width  = _.pluck(Width, 'code');
         $scope.stockSelection.warehouse  = _.pluck(Warehouse, 'code');
 	}
+
     $scope.stockFilter = function(stock) {
         if($scope.stockSelection.color !== allColor && $scope.stockSelection.color.code !== stock.color){return false;}
         if($scope.stockSelection.thickness.indexOf(stock.thickness)===-1){return false;}
@@ -70,8 +72,10 @@ angular.module('VTS.stocks').controller('StocksController', ['$scope', '$routePa
     $scope.tranfer= function(){
         if($scope.adjustments){
             Stocks.transferBoxes($scope.adjustments);
+            $location.path('stock');
         }
 
     };
 
 }]);
+

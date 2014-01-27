@@ -3,15 +3,15 @@
 angular.module('VTS.system').controller('HeaderController', ['$scope', 'Global', function ($scope, Global) {
     $scope.global = Global;
 
-    $scope.menu = [{
+    $scope.menu = [ {
+        'title': 'Stock',
+        'link': 'stock'
+    },{
         'title': 'Inward',
         'link': 'transactionIn'
     }, {
         'title': 'Outward',
         'link': 'transactionOut'
-    }, {
-        'title': 'Stock',
-        'link': 'stock'
     }, {
         'title': 'Adjustment',
         'link': 'stock/BoxAdjustment'

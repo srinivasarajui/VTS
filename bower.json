@@ -11,7 +11,9 @@
     "angular-bootstrap": "latest",
     "angular-ui-utils": "latest",
     "underscore": "latest",
-    "angular-xeditable": "latest"
+    "angular-xeditable": "latest",
+    "jquery": "latest",
+    "ng-grid": "latest"
   },
   "homepage": "https://github.com/linnovate/mean",
   "authors": [

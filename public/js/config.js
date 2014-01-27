@@ -62,6 +62,10 @@ angular.module('VTS').config(['$routeProvider',
             templateUrl: 'views/stock/BoxAdjustment.html',
             controller: 'StocksController'
         }).
+        when('/stock/internalTransfer', {
+            templateUrl: 'views/stock/internalTransfer.html',
+            controller: 'StocksController'
+        }).
         otherwise({
             redirectTo: '/index'
         });
