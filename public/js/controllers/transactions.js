@@ -169,7 +169,22 @@ angular.module('VTS.transactions').controller('TransactionController', ['$scope'
         });
 
     };
-    
+    $scope.validateQty = function(data,qty) {
+    	console.log(data);
+    	console.log(qty);
+    	if(!data )	{
+    		return 'Can not be empty';
+    	}
+    	if(!isPositiveInteger(data)){
+    		return 'Qty should be a valid Postive integer';
+    	}
+  	};
+  	$scope.validateTrans = function() {
+    	
+    	return !$scope.transaction || !$scope.transaction.items || $scope.transaction.items.length===0;
+    	
+  	};
+
     $scope.getDisplayName =getDisplayName;
     $scope.getObj =getObj;
     function init(){
@@ -180,4 +195,8 @@ angular.module('VTS.transactions').controller('TransactionController', ['$scope'
         $scope.rollSize = RollSize;
 
     }
+    function isPositiveInteger(str) {
+    	var n = ~~Number(str);
+    	return String(n) === str && n > 0;
+	}
 }]);
