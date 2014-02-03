@@ -15,33 +15,52 @@ angular.module('VTS.stocks').controller('StocksController', ['$scope', '$routePa
                 filterText: '',
                 useExternalFilter: false
             },
-            showFilter: true,
 
+            enableRowSelection: true,
+
+            plugins: [new ngGridCsvExportPlugin(), new ngGridFlexibleHeightPlugin()],
+            selectWithCheckboxOnly: true,
+            showSelectionBox: true,
+            showGroupPanel: false,
+            showFooter: true,
+            showFilter: true,
+            enablePaging: false,
             selectedItems: $scope.mySelections,
             multiSelect: false,
             columnDefs: [{
                 field: 'color',
-                displayName: 'Color'
+                displayName: 'Color',
+                groupable: true
             }, {
                 field: 'thickness',
-                displayName: 'Thickness'
+                displayName: 'Thickness',
+                groupable: true
             }, {
                 field: 'width',
-                displayName: 'Width'
+                displayName: 'Width',
+                groupable: true
             }, {
                 field: 'warehouse',
-                displayName: 'Warehouse'
+                displayName: 'Warehouse',
+                groupable: true
             }, {
                 field: 'rollSize',
-                displayName: 'Roll Size'
+                displayName: 'Roll Size',
+                groupable: true
+
             }, {
                 field: 'quantity',
                 displayName: 'Quantity'
+            }, {
+                field: 'boxDetails',
+                displayName: 'BoxDetails',
+                visible: false
             }]
         };
 
         $scope.stockItemGridOptions = {
             data: 'mySelections[0].boxes',
+            plugins: [new ngGridFlexibleHeightPlugin()],
             columnDefs: [{
                 field: 'BoxId',
                 displayName: 'Box ID'
@@ -88,6 +107,7 @@ angular.module('VTS.stocks').controller('StocksController', ['$scope', '$routePa
                         return memo + '{ Box Num:' + box.BoxId + ', Qty:' + box.quantity + '},';
                     }, '(');
                     stock.boxDetails = stock.boxDetails.substring(0, stock.boxDetails.length - 1) + ')';
+                    return stock;
                     return stock;
                 });
             });
