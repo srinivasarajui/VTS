@@ -27,8 +27,8 @@ angular.module('VTS.stocks').controller('StocksController', ['$scope', '$routePa
 	$scope.findAll = function(){
 		init();
 		Stocks.query(function(stocks) {
-			var nonZeroStocks  = _.filter(stocks, function(stock) { return stock.quantity > 0 ;});
-			$scope.stocks = _.map(nonZeroStocks, function(stock){
+			
+			$scope.stocks = _.map(stocks, function(stock){
 				stock.boxDetails = _.reduce(stock.boxes, function(memo, box){
 					return memo + '{ Box Num:'+ box.BoxId+', Qty:'+box.quantity+'},';
 				}, '(');

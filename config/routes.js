@@ -51,7 +51,7 @@ module.exports = function(app, passport, auth) {
     app.param('transactionId', transaction.transaction);
 
     var stock = require('../app/controllers/stock');
-    app.get('/stock', auth.requiresLogin,stock.all);
+    app.get('/stock', auth.requiresLogin,stock.allNonZero);
     app.put('/stock/getBoxDetails', auth.requiresLogin,stock.findStockByBoxId);
     app.put('/stock/transferBoxes', auth.requiresLogin,stock.transferBoxes);
     app.put('/stock/findStock', auth.requiresLogin,stock.findStock);

@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 
     
 /**
- * List of transactions
+ * List of Stock items
  */
 exports.all = function(req, res) {
     TapeStock.find().exec(function(err, stocks) {
@@ -21,6 +21,20 @@ exports.all = function(req, res) {
     });
 };
 
+  /**
+ * List of all Non Zero Stock items
+ */
+exports.allNonZero = function(req, res) {
+    TapeStock.find({'quantity':{$gt:0}}).exec(function(err, stocks) {
+        if (err) {
+            res.render('error', {
+                status: 500
+            });
+        } else {
+            res.jsonp(stocks);
+        }
+    });
+};
 
 exports.findStockByBoxId = function(req, res) {
 
