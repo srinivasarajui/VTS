@@ -1,11 +1,11 @@
 'use strict';
 var mongoose = require('mongoose'),
-    TapeStock  = mongoose.model('TapeStock'),
-    BoxTransfer  = mongoose.model('BoxTransfer'),
+    TapeStock = mongoose.model('TapeStock'),
+    BoxTransfer = mongoose.model('BoxTransfer'),
     InternalTransfer = mongoose.model('InternalTransfer'),
     _ = require('lodash');
 
-    
+
 /**
  * List of Stock items
  */
@@ -21,11 +21,15 @@ exports.all = function(req, res) {
     });
 };
 
-  /**
+/**
  * List of all Non Zero Stock items
  */
 exports.allNonZero = function(req, res) {
-    TapeStock.find({'quantity':{$gt:0}}).exec(function(err, stocks) {
+    TapeStock.find({
+        'quantity': {
+            $gt: 0
+        }
+    }).exec(function(err, stocks) {
         if (err) {
             res.render('error', {
                 status: 500
@@ -38,8 +42,10 @@ exports.allNonZero = function(req, res) {
 
 exports.findStockByBoxId = function(req, res) {
 
-    var query = {'boxes.BoxId':req.body.BoxId};
-    
+    var query = {
+        'boxes.BoxId': req.body.BoxId
+    };
+
     TapeStock.find(query).exec(function(err, stocks) {
         if (err) {
             res.render('error', {
@@ -47,65 +53,80 @@ exports.findStockByBoxId = function(req, res) {
             });
         } else {
             var results = [];
-            _.forEach(stocks,function(stock) {
-                var box  = _.find(stock.boxes,{'BoxId':req.body.BoxId});
+            _.forEach(stocks, function(stock) {
+                var box = _.find(stock.boxes, {
+                    'BoxId': req.body.BoxId
+                });
                 results.push({
-                    color:stock.color,
-                    thickness:stock.thickness,
-                    width:stock.width,
-                    warehouse:stock.warehouse,
-                    rollSize:stock.rollSize,
-                    BoxId:box.BoxId,
-                    quantity:box.quantity
+                    color: stock.color,
+                    thickness: stock.thickness,
+                    width: stock.width,
+                    warehouse: stock.warehouse,
+                    rollSize: stock.rollSize,
+                    BoxId: box.BoxId,
+                    quantity: box.quantity
                 });
             });
-            
+
             res.jsonp(results);
         }
     });
 };
 
 exports.transferBoxes = function(req, res) {
-	var reqresult = {
-            code: 'Done',
-            message: 'Stock tranfer done'
-        };
-    var boxTransfer =new BoxTransfer({transfers :req.body});
+    var reqresult = {
+        code: 'Done',
+        message: 'Stock tranfer done'
+    };
+    var boxTransfer = new BoxTransfer({
+        transfers: req.body
+    });
     boxTransfer.save();
-    _.forEach(req.body,function(transfer) {
+    _.forEach(req.body, function(transfer) {
         var query = {
-            color:transfer.color,
-            thickness:transfer.thickness,
-            width:transfer.width,
-            warehouse:transfer.warehouse,
-            rollSize:transfer.rollSize,
+            color: transfer.color,
+            thickness: transfer.thickness,
+            width: transfer.width,
+            warehouse: transfer.warehouse,
+            rollSize: transfer.rollSize,
         };
         TapeStock.findOne(query).exec(function(err, stock) {
-            
-            var index = _.findIndex(stock.boxes, { 'BoxId': transfer.BoxId });
-            if(stock.boxes[index].quantity===transfer.newQuantity){
-                stock.boxes.splice(index,1);
-            }else{
-                stock.boxes[index].quantity = stock.boxes[index].quantity -transfer.newQuantity ;
+
+            var index = _.findIndex(stock.boxes, {
+                'BoxId': transfer.BoxId
+            });
+            if (stock.boxes[index].quantity === transfer.newQuantity) {
+                stock.boxes.splice(index, 1);
+            } else {
+                stock.boxes[index].quantity = stock.boxes[index].quantity - transfer.newQuantity;
             }
-            index = _.findIndex(stock.boxes, { 'BoxId': transfer.newBoxId });
-            if(index===-1){
-                stock.boxes.splice(stock.boxes,0,{BoxId:transfer.newBoxId,quantity:transfer.newQuantity});
-            }else{
+            index = _.findIndex(stock.boxes, {
+                'BoxId': transfer.newBoxId
+            });
+            if (index === -1) {
+                stock.boxes.splice(stock.boxes, 0, {
+                    BoxId: transfer.newBoxId,
+                    quantity: transfer.newQuantity
+                });
+            } else {
                 stock.boxes[index].quantity = stock.boxes[index].quantity + transfer.newQuantity;
             }
-            
+
             stock.save(function(err) {
-                if (err) {console.log(err);}
+                if (err) {
+                    console.log(err);
+                }
             });
         });
     });
-	res.jsonp(reqresult);
+    res.jsonp(reqresult);
 };
 exports.findStock = function(req, res) {
-//TODO
-    var query = {'boxes.BoxId':req.body.BoxId};
-    
+    //TODO
+    var query = {
+        'boxes.BoxId': req.body.BoxId
+    };
+
     TapeStock.find(query).exec(function(err, stocks) {
         if (err) {
             res.render('error', {
@@ -113,19 +134,21 @@ exports.findStock = function(req, res) {
             });
         } else {
             var results = [];
-            _.forEach(stocks,function(stock) {
-                var box  = _.find(stock.boxes,{'BoxId':req.body.BoxId});
+            _.forEach(stocks, function(stock) {
+                var box = _.find(stock.boxes, {
+                    'BoxId': req.body.BoxId
+                });
                 results.push({
-                    color:stock.color,
-                    thickness:stock.thickness,
-                    width:stock.width,
-                    warehouse:stock.warehouse,
-                    rollSize:stock.rollSize,
-                    BoxId:box.BoxId,
-                    quantity:box.quantity
+                    color: stock.color,
+                    thickness: stock.thickness,
+                    width: stock.width,
+                    warehouse: stock.warehouse,
+                    rollSize: stock.rollSize,
+                    BoxId: box.BoxId,
+                    quantity: box.quantity
                 });
             });
-            
+
             res.jsonp(results);
         }
     });
@@ -133,55 +156,68 @@ exports.findStock = function(req, res) {
 
 exports.internalStockTransfer = function(req, res) {
     var reqresult = {
-            code: 'Done',
-            message: 'Stock tranfer done'
-        };
-    var internalTransfer =new InternalTransfer(req.body);
+        code: 'Done',
+        message: 'Stock tranfer done'
+    };
+    var internalTransfer = new InternalTransfer(req.body);
     internalTransfer.save();
-    _.forEach(internalTransfer.transferLines,function(transfer) {
+    _.forEach(internalTransfer.transferLines, function(transfer) {
         var fromquery = {
-            color:transfer.color,
-            thickness:transfer.thickness,
-            width:transfer.width,
-            warehouse:internalTransfer.fromWarehouse,
-            rollSize:transfer.rollSize,
+            color: transfer.color,
+            thickness: transfer.thickness,
+            width: transfer.width,
+            warehouse: internalTransfer.fromWarehouse,
+            rollSize: transfer.rollSize,
         };
         var toquery = {
-            color:transfer.color,
-            thickness:transfer.thickness,
-            width:transfer.width,
-            warehouse:internalTransfer.toWarehouse,
-            rollSize:transfer.rollSize,
+            color: transfer.color,
+            thickness: transfer.thickness,
+            width: transfer.width,
+            warehouse: internalTransfer.toWarehouse,
+            rollSize: transfer.rollSize,
         };
         TapeStock.findOne(fromquery).exec(function(err, stock) {
-            
-            var index = _.findIndex(stock.boxes, { 'BoxId': transfer.BoxId });
-            if(stock.boxes[index].quantity===transfer.newQuantity){
-                stock.boxes.splice(index,1);
-            }else{
-                stock.boxes[index].quantity = stock.boxes[index].quantity -transfer.newQuantity ;
+
+            var index = _.findIndex(stock.boxes, {
+                'BoxId': transfer.BoxId
+            });
+            if (stock.boxes[index].quantity === transfer.newQuantity) {
+                stock.boxes.splice(index, 1);
+            } else {
+                stock.boxes[index].quantity = stock.boxes[index].quantity - transfer.newQuantity;
             }
-            
+
             stock.save(function(err) {
-                if (err) {console.log(err);}
+                if (err) {
+                    console.log(err);
+                }
             });
         });
 
         TapeStock.findOne(toquery).exec(function(err, stock) {
-            
-            var index = _.findIndex(stock.boxes, { 'BoxId': transfer.newBoxId });
-            
-            index = _.findIndex(stock.boxes, { 'BoxId': transfer.newBoxId });
-            if(index===-1){
-                stock.boxes.splice(stock.boxes,0,{BoxId:transfer.newBoxId,quantity:transfer.newQuantity});
-            }else{
+
+            var index = _.findIndex(stock.boxes, {
+                'BoxId': transfer.newBoxId
+            });
+
+            index = _.findIndex(stock.boxes, {
+                'BoxId': transfer.newBoxId
+            });
+            if (index === -1) {
+                stock.boxes.splice(stock.boxes, 0, {
+                    BoxId: transfer.newBoxId,
+                    quantity: transfer.newQuantity
+                });
+            } else {
                 stock.boxes[index].quantity = stock.boxes[index].quantity + transfer.newQuantity;
             }
-            
+
             stock.save(function(err) {
-                if (err) {console.log(err);}
+                if (err) {
+                    console.log(err);
+                }
             });
         });
     });
-	res.jsonp(reqresult);
+    res.jsonp(reqresult);
 };

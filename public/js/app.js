@@ -1,6 +1,6 @@
 'use strict';
 
-var app=angular.module('VTS', ['ngCookies', 'ngResource', 'ngRoute', 'ui.bootstrap', 'ui.route','xeditable', 'underscore','VTS.system','VTS.common', 'VTS.articles','VTS.transactions','VTS.stocks','VTS.users']);
+var app=angular.module('VTS', ['ngGrid','ngCookies', 'ngResource', 'ngRoute', 'ui.bootstrap', 'ui.route','xeditable', 'underscore','VTS.system','VTS.common', 'VTS.articles','VTS.transactions','VTS.stocks','VTS.users']);
 
 angular.module('VTS.system', []);
 angular.module('VTS.common', []);

@@ -1,68 +1,15 @@
 <div class="panel panel-default" data-ng-init="findAll()">
-	<div class="panel-heading clearfix">
-		<h4 class="panel-title pull-left" >Current Stock</h4>
-    <div class ="pull-right">
-     <button type="button" >Export</button>
-    </div>
-	</div>
-	<div class="panel-body">
-  <div class="row" >
-    <div class="col-sm-3" >
-    <select ng-model="stockSelection.color" ng-options="c.displayText for c in color" class="form-control" id="color" placeholder="Enter Color" required > <option value="ALL">ALL</option> </select>
-    
-    </div>
-    <div class="col-sm-2" >
-      <div class="control-group">
-        <div class="controls span2">
-            <label>Thickness</label>
-            <label class="checkbox" ng-repeat="item in thickness">
-              <input type="checkbox" name="selectedThickness[]" ng-checked="stockSelection.thickness.indexOf(item.code)>-1" ng-click="toggleSelection(stockSelection.thickness,item.code)">{{item.displayText}}</label>
-         </div>
-      </div>
-    </div>
-    <div class="col-sm-2" >
-      <div class="control-group">
-        <div class="controls span2">
-            <label>Width</label>
-            <label class="checkbox" ng-repeat="item in width">
-               <input type="checkbox" name="selectedWidth[]" ng-checked="stockSelection.width.indexOf(item.code)>-1" ng-click="toggleSelection(stockSelection.width,item.code)">{{item.displayText}}</label>
-            
-         </div>
-      </div>
-    </div>
-    <div class="col-sm-2" >
-      <div class="control-group">
-        <div class="controls span2">
-            <label>Warehouse</label>
-            <label class="checkbox" ng-repeat="item in warehouse">
-              <input type="checkbox" name="selectedWarehouse[]" ng-checked="stockSelection.warehouse.indexOf(item.code)>-1" ng-click="toggleSelection(stockSelection.warehouse,item.code)">{{item.displayText}}</label>
-            
-         </div>
-      </div>
-    </div>
-  </div>
+    <div class="panel-heading clearfix">
+        <h4 class="panel-title pull-left">Current Stock</h4>
 
-  <br />
- 
-	<table class="table table-bordered table-hover table-condensed clearfix">
-      <tr style="font-weight: bold">
-      <td style="width:20%">Color</td>
-      <td style="width:10%">Thickness</td>
-      <td style="width:10%">Width</td>
-      <td style="width:20%">Warehouse</td>
-      <td style="width:10%">Roll Size</td>
-      <td style="width:10%">Quantity</td>
-      <td style="width:20%">Box Details</td>
-    </tr>
-    <tr ng-repeat="stock in stocks| filter:stockFilter">
-      <td>{{ stock.color || 'empty' }}</td>
-      <td>{{ stock.thickness || 'empty' }}</td>
-      <td>{{ stock.width || 'empty' }}</td>
-      <td>{{ stock.warehouse || 'empty' }}</td>
-      <td>{{ stock.rollSize || 'empty' }}</td>
-      <td>{{ stock.quantity || 'empty' }}</td>
-     <td>{{ stock.boxDetails || 'empty' }}</td>
-    </tr>
-  </table>
-  </div>
-  </div>
+    </div>
+    <div class="panel-body">
+    	<div class="row">
+    	<div class="col-sm-10"><div class="stockListGridStyle" ng-grid="stockListGridOptions"></div></div>
+    	<div class="col-sm-2"><div class="stockItemGridStyle" ng-grid="stockItemGridOptions"></div></div>
+    	</div>
+        
+        <br/>
+        
+    </div>
+</div>
