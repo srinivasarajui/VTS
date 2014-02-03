@@ -1,14 +1,14 @@
 'use strict';
 
 (function() {
-    // Articles Controller Spec
+    // Stocks Controller Spec
     describe('VTS controllers', function() {
         describe('StocksController', function() {
 
             beforeEach(function() {
                 this.addMatchers({
                     toEqualData: function(expected) {
-                        return angular.equals(this.actual, expected);
+              return angular.equals(this.actual, expected);
                     }
                 });
             });

@@ -104,15 +104,22 @@ exports.user = function(req, res, next, id) {
 
 exports.changePassword = function(req, res) {
 
-    User.findOne({'username': req.user.username}).exec(function(err, user) {
-        if(user.authenticate(req.body.oldPassword)){
+    User.findOne({
+        'username': req.user.username
+    }).exec(function(err, user) {
+        var reqresult = {
+            code: 'Done',
+            message: 'Password changed'
+        };
+        if (user.authenticate(req.body.oldPassword)) {
             user.password = req.body.newPassword;
             user.save();
-            res.result = 'DONE';
-            
+        } else {
+            reqresult.code = 'ERROR';
+            reqresult.message = 'Old Password did not match';
         }
+        res.jsonp(reqresult);
     });
-   
- 
-};
 
+
+};

@@ -52,7 +52,10 @@ exports.findStockByBoxId = function(req, res) {
 };
 
 exports.transferBoxes = function(req, res) {
-
+	var reqresult = {
+            code: 'Done',
+            message: 'Stock tranfer done'
+        };
     var boxTransfer =new BoxTransfer({transfers :req.body});
     boxTransfer.save();
     _.forEach(req.body,function(transfer) {
@@ -83,7 +86,7 @@ exports.transferBoxes = function(req, res) {
             });
         });
     });
-
+	res.jsonp(reqresult);
 };
 exports.findStock = function(req, res) {
 //TODO
@@ -115,6 +118,10 @@ exports.findStock = function(req, res) {
 };
 
 exports.internalStockTransfer = function(req, res) {
+    var reqresult = {
+            code: 'Done',
+            message: 'Stock tranfer done'
+        };
     var internalTransfer =new InternalTransfer(req.body);
     internalTransfer.save();
     _.forEach(internalTransfer.transferLines,function(transfer) {
@@ -162,5 +169,5 @@ exports.internalStockTransfer = function(req, res) {
             });
         });
     });
-
+	res.jsonp(reqresult);
 };
