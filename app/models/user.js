@@ -135,7 +135,7 @@ User.find().exec(function(err, users) {
             admin.name = 'srini';
             admin.password = 'Sujani@1';
             admin.email='srini@vesar.in';
-            admin.username='admin';
+            admin.username='srini';
             admin.roles=['SUPER_ADMIN'];
             admin.provider='local';
             admin.save(function(err) {console.error(err); });
@@ -143,7 +143,7 @@ User.find().exec(function(err, users) {
             admin.name = 'office';
             admin.password = 'Vesar@1';
             admin.email='office@vesar.in';
-            admin.username='admin';
+            admin.username='office';
             admin.roles=['SUPER_ADMIN'];
             admin.provider='local';
             admin.save(function(err) {console.error(err); });
@@ -151,7 +151,7 @@ User.find().exec(function(err, users) {
             admin.name = 'factory';
             admin.password = 'Vesar@1';
             admin.email='factory@vesar.in';
-            admin.username='admin';
+            admin.username='factory';
             admin.roles=['SUPER_ADMIN'];
             admin.provider='local';
             admin.save(function(err) {console.error(err); });
