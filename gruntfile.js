@@ -39,6 +39,50 @@ module.exports = function(grunt) {
                 }
             }
         },
+        concat: {
+            options: {
+                separator: "\n", //add a new line after each file
+                banner: "", //added before everything
+                footer: "" //added after everything
+            },
+            dist: {
+                // the files to concatenate
+                src: [
+                    //include libs
+                    'public/lib/angular/angular.js',
+                    'public/lib/angular-cookies/angular-cookies.js',
+                    'public/lib/angular-resource/angular-resource.js',
+                    'public/lib/angular-route/angular-route.js',
+                    'public/lib/angular-bootstrap/ui-bootstrap.js',
+                    'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
+                    'public/lib/angular-ui-utils/ui-utils.js',
+                    'public/lib/underscore/underscore.js',
+                    'public/lib/angular-xeditable/dist/js/xeditable.js',
+                    'public/lib/jquery/jquery.js',
+                    'public/lib/ng-grid/ng-grid-2.0.7.js',
+                    'public/lib/ng-grid/plugins/ng-grid-flexible-height.js',
+                    'public/lib/ng-grid/plugins/ng-grid-csv-export.js',
+
+                    //own classes and files
+                    'public/js/!(base).js',
+                    'public/js/controllers/!(base).js',
+                    'public/js/services/!(base).js'
+
+                    ],
+    
+                // the location of the resulting JS file
+                dest: 'build/<%= pkg.name %>.js'
+            }
+        },
+        uglify: {
+            options: {
+                banner: ""
+            },
+            build: {
+                src: 'build/<%= pkg.name %>.js',
+                dest: 'build/<%= pkg.name %>.min.js'
+            }
+        },
         nodemon: {
             dev: {
                 options: {
@@ -59,6 +103,12 @@ module.exports = function(grunt) {
             tasks: ['nodemon', 'watch'],
             options: {
                 logConcurrentOutput: true
+            }
+        },
+        removelogging: {
+            dist: {
+                src: "build/<%= pkg.name %>.js",
+                dest: "build/<%= pkg.name %>.js"
             }
         },
         mochaTest: {
@@ -88,6 +138,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-env');
+    grunt.loadNpmTasks('grunt-remove-logging');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-concat');
 
     //Making grunt default to force in order not to break the project.
     grunt.option('force', true);
@@ -98,5 +151,5 @@ module.exports = function(grunt) {
     //Test task.
     grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);
 
-    
+    grunt.registerTask('build', ['concat', 'removelogging', 'uglify']);
 };
