@@ -116,6 +116,7 @@ angular.module('VTS.transactions').controller('TransactionController', ['$scope'
             } else if (!$scope.transaction.items) {
                 $scope.transaction.items = [];
             }
+            
             $scope.transaction.items.splice($scope.transaction.items, 0, {
 
                 color: $scope.newitem.color,

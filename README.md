@@ -3,4 +3,5 @@
 Vesar Tape Stock
 
 Features:
-	-> 
+	-> Tape Stock taking using boxes as storage locations
+	

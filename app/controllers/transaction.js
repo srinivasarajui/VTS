@@ -4,8 +4,10 @@
  */
 var mongoose = require('mongoose'),
     Transaction = mongoose.model('Transaction'),
-    TapeStock  = mongoose.model('TapeStock'),
+    TapeStock = mongoose.model('TapeStock'),
     _ = require('lodash');
+
+
 
 /**
  * Find transaction by id
@@ -22,11 +24,11 @@ exports.transaction = function(req, res, next, id) {
 /**
  * Create a transaction
  */
-var create = function(req, res,transaction) {
-    if(!transaction.transState){
+var create = function(req, res, transaction) {
+    if (!transaction.transState) {
         transaction.transState = 'DRAFT';
     }
-
+    
     transaction.save(function(err) {
         if (err) {
             return res.send('users/signup', {
@@ -37,19 +39,19 @@ var create = function(req, res,transaction) {
             res.jsonp(transaction);
         }
     });
-    
+
 };
 
 exports.createIn = function(req, res) {
     var transaction = new Transaction(req.body);
     transaction.transType = 'IN';
-    create(req, res,transaction);
+    create(req, res, transaction);
 };
 
 exports.createOut = function(req, res) {
     var transaction = new Transaction(req.body);
     transaction.transType = 'OUT';
-    create(req, res,transaction);
+    create(req, res, transaction);
 
 };
 
@@ -57,15 +59,21 @@ exports.createOut = function(req, res) {
  * Update a transaction
  */
 exports.update = function(req, res) {
-    
+
     var transaction = req.transaction;
-    if(!transaction.transState){
+    if (!transaction.transState) {
         transaction.transState = 'DRAFT';
     }
     transaction = _.extend(transaction, req.body);
-    if(transaction.transState === 'APPROVED'){
-        return res.send('500',{errors:[{Error:'Can not updated APPROVED'}],transaction: transaction});
+    if (transaction.transState === 'APPROVED') {
+        return res.send('500', {
+            errors: [{
+                Error: 'Can not updated APPROVED'
+            }],
+            transaction: transaction
+        });
     }
+    
     transaction.save(function(err) {
         if (err) {
             return res.send('users/signup', {
@@ -106,7 +114,7 @@ exports.show = function(req, res) {
 /**
  * List of transactions
  */
-var all = function(req, res,query) {
+var all = function(req, res, query) {
     Transaction.find(query).exec(function(err, transactions) {
         if (err) {
             res.render('error', {
@@ -119,12 +127,16 @@ var all = function(req, res,query) {
 };
 
 exports.allIn = function(req, res) {
-    var query = {transType:'IN'};
+    var query = {
+        transType: 'IN'
+    };
     all(req, res, query);
 };
 
 exports.allOut = function(req, res) {
-    var query = {transType:'OUT'};
+    var query = {
+        transType: 'OUT'
+    };
     all(req, res, query);
 };
 
@@ -134,50 +146,57 @@ exports.allOut = function(req, res) {
 exports.approve = function(req, res) {
     var transaction = req.transaction;
     transaction = _.extend(transaction, req.body);
-    if(transaction.transState === 'APPROVED'){
+    
+    if (transaction.transState === 'APPROVED') {
         return res.send('500', {
-                errors: null,
-                transaction: transaction
-            });
+            errors: null,
+            transaction: transaction
+        });
     }
     transaction.transState = 'APPROVED';
+
     _.forEach(transaction.lines, function(line) {
         var conditions = {
-            color:line.color,
-            thickness:line.thickness,
-            width:line.width,
-            rollSize:line.rollSize,
-            warehouse:transaction.warehouse
+            color: line.color,
+            thickness: line.thickness,
+            width: line.width,
+            rollSize: line.rollSize,
+            warehouse: transaction.warehouse
         };
+
         TapeStock.findOne(conditions).exec(function(err, stock) {
-            var index = _.findIndex(stock.boxes, { 'BoxId': line.boxNum });
-            if(transaction.transType==='IN'){
-                stock.quantity = stock.quantity +line.quantity;
-                 
-                if(index===-1){
-                    stock.boxes.splice(stock.boxes,0,{BoxId:line.boxNum,quantity:line.quantity});
-                }else{
+            var index = _.findIndex(stock.boxes, {
+                'BoxId': line.boxNum
+            });
+            if (transaction.transType === 'IN') {
+                stock.quantity = stock.quantity + line.quantity;
+
+                if (index === -1) {
+                    stock.boxes.splice(stock.boxes, 0, {
+                        BoxId: line.boxNum,
+                        quantity: line.quantity
+                    });
+                } else {
                     stock.boxes[index].quantity = stock.boxes[index].quantity + line.quantity;
                 }
-                 
-            }
-            else if(transaction.transType==='OUT'){
-                stock.quantity = stock.quantity -line.quantity;
-                
-                if(index!==-1){
+
+            } else if (transaction.transType === 'OUT') {
+                stock.quantity = stock.quantity - line.quantity;
+
+                if (index !== -1) {
 
                     stock.boxes[index].quantity = stock.boxes[index].quantity - line.quantity;
-                    if(stock.boxes[index].quantity<=0){
-                        stock.boxes.splice(index,1);
+                    if (stock.boxes[index].quantity <= 0) {
+                        stock.boxes.splice(index, 1);
                     }
                 }
             }
             stock.save();
         });
-        
-        
-        
-       
+
+
+
+
         transaction.save(function(err) {
             if (err) {
                 return res.send('users/signup', {
@@ -190,3 +209,4 @@ exports.approve = function(req, res) {
         });
     });
 };
+

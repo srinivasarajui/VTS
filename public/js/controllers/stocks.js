@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('VTS.stocks').controller('StocksController', ['$scope', '$routeParams', '$location', 'Global', 'Stocks', '_', 'Color', 'Thickness', 'Width', 'Warehouse',
-    function($scope, $routeParams, $location, Global, Stocks, _, Color, Thickness, Width, Warehouse) {
+angular.module('VTS.stocks').controller('StocksController', ['$scope', '$routeParams', '$location', 'Global', 'Stocks', '_', 'Color', 'Thickness', 'Width', 'Warehouse', 'ParamUtil',
+    function($scope, $routeParams, $location, Global, Stocks, _, Color, Thickness, Width, Warehouse, ParamUtil) {
         $scope.global = Global;
         var allColor = {
             internalCode: 'ALL',
@@ -18,7 +18,7 @@ angular.module('VTS.stocks').controller('StocksController', ['$scope', '$routePa
 
             enableRowSelection: true,
 
-            plugins: [new ngGridCsvExportPlugin(), new ngGridFlexibleHeightPlugin()],
+            plugins: [new ngGridCsvExportPlugin()],
             selectWithCheckboxOnly: true,
             showSelectionBox: true,
             showGroupPanel: false,
@@ -60,7 +60,7 @@ angular.module('VTS.stocks').controller('StocksController', ['$scope', '$routePa
 
         $scope.stockItemGridOptions = {
             data: 'mySelections[0].boxes',
-            plugins: [new ngGridFlexibleHeightPlugin()],
+
             columnDefs: [{
                 field: 'BoxId',
                 displayName: 'Box ID'
@@ -103,12 +103,17 @@ angular.module('VTS.stocks').controller('StocksController', ['$scope', '$routePa
             Stocks.query(function(stocks) {
 
                 $scope.stocks = _.map(stocks, function(stock) {
+                    stock.color = ParamUtil.getDisplayTextOfColor(stock.color);
+                    stock.thickness = ParamUtil.getDisplayTextOfThickness(stock.thickness);
+                    stock.width = ParamUtil.getDisplayTextOfWidth(stock.width);
+                    stock.warehouse = ParamUtil.getDisplayTextOfWarehouse(stock.warehouse);
+                    stock.rollSize = ParamUtil.getDisplayTextOfRollSize(stock.rollSize);
                     stock.boxDetails = _.reduce(stock.boxes, function(memo, box) {
                         return memo + '{ Box Num:' + box.BoxId + ', Qty:' + box.quantity + '},';
                     }, '(');
                     stock.boxDetails = stock.boxDetails.substring(0, stock.boxDetails.length - 1) + ')';
                     return stock;
-                    return stock;
+
                 });
             });
         };

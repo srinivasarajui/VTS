@@ -5,7 +5,7 @@
  */
 //var _ = require('lodash');
 
-var paramsPath = __dirname.substring(0,__dirname.lastIndexOf('/'))+'/common/params.js';
+var paramsPath = __dirname.substring(0, __dirname.lastIndexOf('/')) + '/common/params.js';
 
 
 
@@ -21,7 +21,7 @@ var mongoose = require('mongoose'),
 var BoxDetailsSchema = new Schema({
     BoxId: {
         type: String,
-        default: '',
+        default: 'Unassigned',
         trim: true,
         uppercase: true
     },
@@ -35,49 +35,60 @@ var BoxDetailsSchema = new Schema({
  * Stock Schema
  */
 var TapeStockSchema = new Schema({
-	color: {
+    color: {
         type: String,
         default: '',
         trim: true,
         uppercase: true,
-        enum:params.getColorCode()
+        enum: params.getColorCode()
     },
     thickness: {
         type: String,
         default: '',
         trim: true,
         uppercase: true,
-        enum:params.getThicknessCode()
+        enum: params.getThicknessCode()
     },
     width: {
         type: String,
         default: '',
         trim: true,
         uppercase: true,
-        enum:params.getWidthCode()
+        enum: params.getWidthCode()
     },
     warehouse: {
         type: String,
         default: '',
         trim: true,
         uppercase: true,
-        enum:params.getWarehouseCode()
+        enum: params.getWarehouseCode()
     },
     rollSize: {
         type: String,
         default: '',
         trim: true,
         uppercase: true,
-        enum:params.getRollSizeCode()
+        enum: params.getRollSizeCode()
     },
     quantity: {
         type: Number,
         min: 0
     },
-    boxes : [BoxDetailsSchema]
-    
-});
+    boxes: [BoxDetailsSchema]
 
+});
+TapeStockSchema.pre('save', function(next) {
+    _.forEach(this.boxes, function(line) {
+
+        if (line.BoxId === null || line.BoxId === '') {
+
+            line.BoxId = 'Unassigned';
+
+        }
+    });
+
+    next();
+});
 mongoose.model('TapeStock', TapeStockSchema);
 
 //INIT Admin User
@@ -87,7 +98,7 @@ TapeStock.find().exec(function(err, tapeStock) {
     if (err) {
         console.error(err);
     } else {
-        if(!tapeStock || tapeStock.length ===0){
+        if (!tapeStock || tapeStock.length === 0) {
             _.forEach(params.getInitList(), function(item) {
                 var stock = new TapeStock();
                 stock.color = item.color.code;
@@ -96,7 +107,9 @@ TapeStock.find().exec(function(err, tapeStock) {
                 stock.warehouse = item.warehouse.code;
                 stock.rollSize = item.rollSize.code;
                 stock.quantity = item.quantity;
-                stock.save(function(err) {console.error(err); });
+                stock.save(function(err) {
+                    console.error(err);
+                });
             });
 
         }

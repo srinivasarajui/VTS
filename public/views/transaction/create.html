@@ -67,13 +67,14 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="sr-only" for="noOfRolls">No Of Rolls</label>
-                    <input type="number" data-ng-model="newitem.quantity" class="form-control" id="noOfRolls" placeholder="Enter No Of Rolls" min="0" required>
-                </div>
-                <div class="form-group">
                     <label class="sr-only" for="boxNum">Box Number</label>
                     <input type="String" data-ng-model="newitem.boxNum" class="form-control" id="boxNum" placeholder="Enter Box Number">
                 </div>
+                <div class="form-group">
+                    <label class="sr-only" for="noOfRolls">No Of Rolls</label>
+                    <input type="number" data-ng-model="newitem.quantity" class="form-control" id="noOfRolls" placeholder="Enter No Of Rolls" min="0" required>
+                </div>
+                
                 <button type="submit" class="btn btn-primary" ng-disabled="itemform.$invalid">
                     <span class="glyphicon glyphicon-plus-sign"></span>
                 </button>
@@ -87,8 +88,8 @@
                 <td style="width:15%">Thickness</td>
                 <td style="width:15%">Width</td>
                 <td style="width:15%">Roll Length</td>
-                <td style="width:10%">No Of Rolls</td>
                 <td style="width:10%">Box Number</td>
+                <td style="width:10%">No Of Rolls</td>
                 <td style="width:10%">Edit</td>
             </tr>
             <tr ng-repeat="item in transaction.items">
@@ -119,16 +120,17 @@
                 </td>
                 <td>
                     <!-- editable color.name (text with validation) -->
-                    <span editable-text="item.quantity" e-name="noOfRolls" e-form="inwaRdrowfOrm" onbeforesave="validateQty($data,item.quantity)" e-required>
-                        {{ item.quantity || 'empty' }}
-                    </span>
-                </td>
-                <td>
-                    <!-- editable color.name (text with validation) -->
                     <span editable-text="item.boxNum" e-name="boxNum" e-form="inwaRdrowfOrm" e-required>
                         {{ item.boxNum || 'empty' }}
                     </span>
                 </td>
+                <td>
+                    <!-- editable color.name (text with validation) -->
+                    <span editable-text="item.quantity" e-name="noOfRolls" e-form="inwaRdrowfOrm" onbeforesave="validateQty($data,item.quantity)" e-required>
+                        {{ item.quantity || 'empty' }}
+                    </span>
+                </td>
+                
                 <td style="white-space: nowrap">
                     <!-- form -->
                     <form editable-form name="inwaRdrowfOrm" ng-show="inwaRdrowfOrm.$visible" class="form-buttons form-inline">

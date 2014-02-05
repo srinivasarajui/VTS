@@ -221,3 +221,29 @@ exports.internalStockTransfer = function(req, res) {
     });
     res.jsonp(reqresult);
 };
+exports.getQuanityOfStock = function(req, res) {
+
+    var query = {
+        'boxes.BoxId': req.body.BoxId,
+        'color': req.body.color,
+        'thickness': req.body.thickness,
+        'width': req.body.width,
+        'rollSize': req.body.rollSize,
+        'warehouse': req.body.warehouse
+
+
+    };
+
+    TapeStock.findOne(query).exec(function(err, stock) {
+        if (err) {
+            res.render('error', {
+                status: 500
+            });
+        } else {
+            var box = _.find(stock.boxes, {
+                'BoxId': req.body.BoxId
+            });
+            res.jsonp(box.quantity);
+        }
+    });
+};

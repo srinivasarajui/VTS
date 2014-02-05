@@ -41,9 +41,9 @@ module.exports = function(grunt) {
         },
         concat: {
             options: {
-                separator: "\n", //add a new line after each file
-                banner: "", //added before everything
-                footer: "" //added after everything
+                separator: '\n', //add a new line after each file
+                banner: '', //added before everything
+                footer: '' //added after everything
             },
             dist: {
                 // the files to concatenate
@@ -68,15 +68,15 @@ module.exports = function(grunt) {
                     'public/js/controllers/!(base).js',
                     'public/js/services/!(base).js'
 
-                    ],
-    
+                ],
+
                 // the location of the resulting JS file
                 dest: 'build/<%= pkg.name %>.js'
             }
         },
         uglify: {
             options: {
-                banner: ""
+                banner: ''
             },
             build: {
                 src: 'build/<%= pkg.name %>.js',
@@ -107,8 +107,8 @@ module.exports = function(grunt) {
         },
         removelogging: {
             dist: {
-                src: "build/<%= pkg.name %>.js",
-                dest: "build/<%= pkg.name %>.js"
+                src: 'build/<%= pkg.name %>.js',
+                dest: 'build/<%= pkg.name %>.js'
             }
         },
         mochaTest: {

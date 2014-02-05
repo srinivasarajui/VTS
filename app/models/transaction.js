@@ -3,45 +3,46 @@
 /**
  * Module dependencies.
  */
-var paramsPath = __dirname.substring(0,__dirname.lastIndexOf('/'))+'/common/params.js';
+var paramsPath = __dirname.substring(0, __dirname.lastIndexOf('/')) + '/common/params.js';
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    params = require(paramsPath) ;
+    params = require(paramsPath),
+    _ = require('lodash');
 
 /**
  * TransactionLine Schema
  */
 var TransactionLineSchema = new Schema({
-	lineNo : {
-		type: Number
-	},
-	color: {
+    lineNo: {
+        type: Number
+    },
+    color: {
         type: String,
         default: '',
         trim: true,
         uppercase: true,
-        enum:params.getColorCode()
+        enum: params.getColorCode()
     },
     thickness: {
         type: String,
         default: '',
         trim: true,
         uppercase: true,
-        enum:params.getThicknessCode()
+        enum: params.getThicknessCode()
     },
     width: {
         type: String,
         default: '',
         trim: true,
         uppercase: true,
-        enum:params.getWidthCode()
+        enum: params.getWidthCode()
     },
     rollSize: {
         type: String,
         default: '',
         trim: true,
         uppercase: true,
-        enum:params.getRollSizeCode()
+        enum: params.getRollSizeCode()
     },
     quantity: {
         type: Number,
@@ -49,7 +50,7 @@ var TransactionLineSchema = new Schema({
     },
     boxNum: {
         type: String,
-        default: ''
+        default: 'Unassigned'
     }
 
 });
@@ -58,7 +59,7 @@ var TransactionLineSchema = new Schema({
  * Transaction Schema
  */
 var TransactionSchema = new Schema({
-	docId: {
+    docId: {
         type: String,
         default: '',
         trim: true,
@@ -73,24 +74,24 @@ var TransactionSchema = new Schema({
         default: '',
         trim: true,
         uppercase: true,
-        enum:params.getWarehouseCode()
+        enum: params.getWarehouseCode()
     },
     transType: {
         type: String,
         default: 'IN',
         trim: true,
         uppercase: true,
-        enum:['IN','OUT']
+        enum: ['IN', 'OUT']
     },
     transState: {
         type: String,
         default: 'DRAFT',
         trim: true,
         uppercase: true,
-        enum:['DRAFT','APPROVED']
+        enum: ['DRAFT', 'APPROVED']
     },
-    lines : [TransactionLineSchema]
-    
+    lines: [TransactionLineSchema]
+
 });
 /**
  * Statics
@@ -100,4 +101,17 @@ TransactionSchema.statics.load = function(id, cb) {
         _id: id
     }).exec(cb);
 };
+
+TransactionSchema.pre('save', function(next) {
+    _.forEach(this.lines, function(line) {
+
+        if (line.boxNum === null || line.boxNum === '') {
+
+            line.boxNum = 'Unassigned';
+
+        }
+    });
+
+    next();
+});
 mongoose.model('Transaction', TransactionSchema);
